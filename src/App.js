@@ -2,44 +2,37 @@ import "./App.css";
 import { useState } from "react";
 
 function App() {
-  
-  const [val, setVal] = useState('');
-  const [showText, setShowText] = useState(true);
-  const [count, setCount] = useState(0);
+  const [todoList, setTodoList] = useState([]);
+  const [newTask, setNewTask] = useState('');
 
-  const handleButton = () => {
-    setShowText(!showText);
-  }
+  const handleChange = (event) => {
+    setNewTask(event.target.value);
+  };
 
-  const handleInputChange = (event) => {
-    console.log(event.target.value);
-    setVal(event.target.value)
-  }
+  const addTask = () => {
+    setTodoList([...todoList, newTask]);
+  };
 
-  const countZero = () => {
-    setCount(0);
-  }
-
-  const countMinus = () => {
-    setCount(count-1);
-  }
-
-  const countPlus = () => {
-    setCount(count+1);
-  }
+  const deleteTask = (taskName, key) => {
+    setTodoList(todoList.slice(0,key).concat(todoList.slice(key+1)));
+  };
 
   return (
     <div className="App">
-      <input type="text" onChange={handleInputChange}/>
-      {val}
-      <br />
-      <button onClick={handleButton}>Show/Hide</button>
-      {showText && <h1> Hi My Name Is Karthik Vajja </h1>}
-      <br />
-      <button onClick={countPlus}>Increase</button>
-      <button onClick={countMinus}>Decrease</button>
-      <button onClick = {countZero}>Set to Zero</button>
-      {count}
+      <div className="addTask">
+        <input onChange={handleChange}/>
+        <button onClick={addTask}> Add Task </button>
+      </div>
+      <div className="list">
+        {todoList.map((task, key) => {
+          return (
+            <div key={key}>
+              <h1>{task}</h1>
+              <button onClick={() => deleteTask(task, key)}>X</button>
+            </div>  
+          )
+        })}
+      </div>
     </div>
   );
 }
