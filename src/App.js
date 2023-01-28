@@ -1,28 +1,27 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Axios from "axios";
-import { useState } from "react";
-import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Contact } from "./pages/Contact";
-import { Menu } from "./pages/Menu";
+import { Profile } from "./pages/Profile";
+import { Navbar } from "./pages/Navbar"
+import { useState, createContext } from "react";
+
+export const AppContext = createContext();
 
 function App() {
-
+  const [username, setUsername] = useState("Karthik Vajja");
   return (
     <div className="App">
-      <Router>
-        <div>
-          <Link to="/"> Home </Link>
-          <Link to="/menu"> Menu </Link>
-          <Link to="/contact"> Contact </Link>
-        </div>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-      </Router>
+      <AppContext.Provider value={{username, setUsername}}>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home/>} />
+            <Route path="/profile" element={<Profile/>} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </Router>
+      </AppContext.Provider>
     </div>
   );
 }
